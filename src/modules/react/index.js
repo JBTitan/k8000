@@ -108,7 +108,7 @@ module.exports = {
 							debug("Finished");
 						});
 					});
-				});
+				}).catch(k8000.err);
 			}
 		};
 

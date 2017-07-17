@@ -4,5 +4,6 @@
 	},
 	"liveAvatar": {
 		"offset": 0
-	}
+	},
+	"errorChannel": ""
 }

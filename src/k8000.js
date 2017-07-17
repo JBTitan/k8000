@@ -33,9 +33,19 @@ class K8000 extends discord.Client {
 				debug("Bot logged in to account %s", this.user);
 				return fs.readdirAsync(Path.resolve(__dirname, "modules")).each(name => {
 					this.loadModule(name);
-				});
+				}).catch(this.err);
 			});
 		});
+	}
+
+	/**
+	 * Handles errors.
+	 * @param {Error} err
+	 */
+	err(err) {
+		console.error(err);
+		
+		return this.channels.get(config.get("errorChannel")).send(err);
 	}
 
 	/**
@@ -60,7 +70,6 @@ class K8000 extends discord.Client {
 	 * @param {string} name The name of the module to unload.
 	 */
 	unloadModule(name) {
-		debug("ack");
 		Promise.try(() => {
 			debug("ack2");
 			if (!this.modules[name]) {
@@ -83,7 +92,7 @@ class K8000 extends discord.Client {
 				return this.unloadModule(name);
 			};
 		});
-
+.catch(this.err)
 		return Promise.all(fns);
 	}
 }

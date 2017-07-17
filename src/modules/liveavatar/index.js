@@ -25,7 +25,7 @@ module.exports = {
 					})
 					.then(() => {
 						debug("Successfully set avatar!");
-					});
+					}).catch(k8000.err);
 			}
 		}, 60000);
 	},
