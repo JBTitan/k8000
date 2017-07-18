@@ -14,7 +14,7 @@ module.exports = {
 			debug("Checking hour");
 			const hour = (new Date().getHours() + config.get("liveAvatar.offset")) % 24;
 
-			if (this.lastHour < hour) {
+			if (this.lastHour < hour || this.lastHour == 23) {
 				const filename = Path.resolve(k8000.data, "avatars", _.padStart(hour, 2, "0") + ".jpg");
 				this.lastHour = hour;
 
