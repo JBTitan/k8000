@@ -92,7 +92,6 @@ class K8000 extends discord.Client {
 				return this.unloadModule(name);
 			};
 		});
-.catch(this.err)
 		return Promise.all(fns);
 	}
 }
