@@ -2,8 +2,8 @@ const Promise = require("bluebird");
 
 const reactionCharacters = {
 	// Letters
-	A: ["🇦", "🅰️"],
-	B: ["🇧", "🅱️"],
+	A: ["🇦", "🅰"],
+	B: ["🇧", "🅱"],
 	C: ["🇨"],
 	D: ["🇩"],
 	E: ["🇪"],
@@ -15,10 +15,10 @@ const reactionCharacters = {
 	J: ["🇯"],
 	K: ["🇰"],
 	L: ["🇱"],
-	M: ["🇲", "Ⓜ️"],
+	M: ["🇲", "Ⓜ"],
 	N: ["🇳"],
-	O: ["🇴", "🅾️", "⭕"],
-	P: ["🇵", "🅿️"],
+	O: ["🇴", "🅾", "⭕"],
+	P: ["🇵", "🅿"],
 	Q: ["🇶"],
 	R: ["🇷"],
 	S: ["🇸"],
@@ -26,22 +26,11 @@ const reactionCharacters = {
 	U: ["🇺"],
 	V: ["🇻"],
 	W: ["🇼"],
-	X: ["🇽", "✖️", "❌", "❎"],
+	X: ["🇽", "✖", "❌", "❎"],
 	Y: ["🇾"],
 	Z: ["🇿"],
 
 	// Numbers
-	0: ["0️⃣"],
-	1: ["1️⃣"],
-	2: ["2️⃣"],
-	3: ["3️⃣"],
-	4: ["4️⃣"],
-	5: ["5️⃣"],
-	6: ["6️⃣"],
-	7: ["7️⃣"],
-	8: ["8️⃣"],
-	9: ["9️⃣"],
-	10: ["🔟"],
 	100: ["💯"],
 
 	// Punctuation
@@ -50,10 +39,10 @@ const reactionCharacters = {
 	"!!": ["‼️"],
 
 	// Symbols
-	"#": ["#️⃣"],
+	"#": ["#⃣"],
 
-	// Other
-	BACK: ["🔙"],
+	// Other (none of the strings are right) i'll fix it later
+/*	BACK: ["🔙"],
 	END: ["🔚"],
 	ON: ["🔛"],
 	SOON: ["🔜"],
@@ -68,7 +57,7 @@ const reactionCharacters = {
 	OK: ["🆗"],
 	SOS: ["🆘"],
 	UP: ["🆙"],
-	VS: ["🆚"]
+	VS: ["🆚"] */
 };
 
 module.exports = {
@@ -96,6 +85,7 @@ module.exports = {
 							for (let j = 0; j < possibleEmoji.length; j++) {
 								if (emoji.indexOf(possibleEmoji[j]) === -1) {
 									emoji.push(possibleEmoji[j]);
+									break;
 								}
 							}
 						}
