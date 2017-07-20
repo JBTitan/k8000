@@ -15,20 +15,19 @@ module.exports = {
 			debug("Received player event; querying status");
 			return this.client.sendCommandAsync("status")
 				.then(mpd.parseKeyValueMessage)
-				.then((msg) => {
+				.then(msg => {
 					debug("Player state is \"%s\"", msg.state);
 					if (msg.state === "play") {
 						return this.client.sendCommandAsync("currentsong")
 							.then(mpd.parseKeyValueMessage)
-							.then((song) => {
-								let playing = (song.Artist || "Unknown") + " - " + (song.Title || "Unknown");
+							.then(song => {
+								const playing = (song.Artist || "Unknown") + " - " + (song.Title || "Unknown");
 								debug("Setting playing message to %s", playing);
 								return k8000.user.setGame(playing);
 							});
-					} else {
-						debug("Clearing playing message");
-						k8000.user.setGame();
 					}
+					debug("Clearing playing message");
+					k8000.user.setGame();
 				}).catch(k8000.err);
 		});
 	},
@@ -36,4 +35,4 @@ module.exports = {
 		debug("Closing client");
 		return this.client.sendCommandAsync("close");
 	}
-}
+};

@@ -44,7 +44,7 @@ class K8000 extends discord.Client {
 	 */
 	err(err) {
 		console.error(err);
-		
+
 		return this.channels.get(config.get("errorChannel")).send(err);
 	}
 
