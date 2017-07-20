@@ -5,5 +5,9 @@
 	"liveAvatar": {
 		"offset": 0
 	},
+	"mpd": {
+		"host": "localhost",
+		"port": 6600
+	},
 	"errorChannel": ""
 }
