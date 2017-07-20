@@ -1,5 +1,6 @@
 const Promise = require("bluebird");
 
+const config = require("config");
 const debug = require("debug")("k8000");
 const discord = require("discord.js");
 const fs = Promise.promisifyAll(require("fs"));
