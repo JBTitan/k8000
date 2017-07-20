@@ -5,6 +5,7 @@ const mpd = require("mpd");
 
 module.exports = {
 	load(k8000, debug) {
+		debug("Connecting to MPD server");
 		this.client = Promise.promisifyAll(mpd.connect({
 			host: config.get("mpd.host"),
 			port: config.get("mpd.port")
@@ -32,6 +33,7 @@ module.exports = {
 		});
 	},
 	unload(k8000, debug) {
+		debug("Closing client");
 		return this.client.sendCommandAsync("close");
 	}
 }
