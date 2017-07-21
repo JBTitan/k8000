@@ -42,6 +42,10 @@ class K8000 extends discord.Client {
 				}).catch(this.err);
 			});
 		});
+
+		// IF THIS IS IN A COMMIT IT SHOULDNT BE THIS IS JUST FOR TESTING WHY ARE YOU READING THIS CRAP I COMMITED IT DIDNT I
+
+
 	}
 
 	/**
@@ -76,7 +80,7 @@ class K8000 extends discord.Client {
 				if (typeof (status) === "string") {
 					return [status, csm];
 				}
-			}).then(([status, csm]) => {
+			}, false).then(([status, csm]) => {
 				this.currentStatusModule = csm;
 				if (status) {
 					debug("Setting game to %s", status);
