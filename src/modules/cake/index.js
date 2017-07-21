@@ -8,7 +8,7 @@ function generateCake(text) {
 	const canvas = new Canvas(612, 406);
 	const ctx = canvas.getContext("2d");
 
-	return fs.readFileAsync(Path.resolve(__dirname, "/cake.png")).then(data => {
+	return fs.readFileAsync(Path.resolve(__dirname, "cake.png")).then(data => {
 		const image = new Canvas.Image();
 		image.src = data;
 
