@@ -11,7 +11,7 @@ module.exports = {
 			port: config.get("mpd.port")
 		}));
 
-		/*this.client.on("system-player", () => {
+		/* This.client.on("system-player", () => {
 			debug("Received player event; querying status");
 			return this.client.sendCommandAsync("status")
 				.then(mpd.parseKeyValueMessage)
@@ -29,7 +29,7 @@ module.exports = {
 					debug("Clearing playing message");
 					k8000.user.setGame();
 				}).catch(k8000.err);
-		});*/
+		}); */
 
 		this.client.on("ready", () => {
 			debug("Client is ready");

@@ -35,7 +35,9 @@ class K8000 extends discord.Client {
 				return fs.readdirAsync(Path.resolve(__dirname, "modules")).each(name => {
 					return this.loadModule(name);
 				}).then(() => {
-					setInterval(() => { this.updateStatus().catch(this.err) }, 15000);
+					setInterval(() => {
+						this.updateStatus().catch(this.err);
+					}, 15000);
 					this.updateStatus().catch(this.err);
 				}).catch(this.err);
 			});
@@ -48,17 +50,17 @@ class K8000 extends discord.Client {
 	 */
 	updateStatus() {
 		debug("Updating playing message");
-		let keys = Object.keys(this.modules).sort();
-		this.currentStatusModule = (this.currentStatusModule + 1|| 0) % keys.length;
+		const keys = Object.keys(this.modules).sort();
+		this.currentStatusModule = (this.currentStatusModule + 1 || 0) % keys.length;
 
 		// Add all of the module.getPlaying functions to an array as promises
-		let promises = [];
+		const promises = [];
 		for (let i = this.currentStatusModule; i < keys.length + this.currentStatusModule; i++) { // Start at this.currentStatusModule and loop around the end of the array
-			let module = keys[i % keys.length];
+			const module = keys[i % keys.length];
 
 			// Wrap the function as a promise
 			if (this.modules[module].getPlaying) {
-				promises.push(new Promise((resolve, reject) => {
+				promises.push(new Promise(resolve => {
 					return resolve([this.modules[module].getPlaying(this, require("debug")("k8000:modules:" + module)), i % keys.length]);
 				}));
 			}
@@ -68,8 +70,10 @@ class K8000 extends discord.Client {
 			.map(([p, csm]) => { // Make sure its all fulfilled
 				return Promise.all([p, csm]);
 			}).reduce((first, [status, csm]) => {
-				if (first) return first;
-				if (typeof(status) === "string") {
+				if (first) {
+					return first;
+				}
+				if (typeof (status) === "string") {
 					return [status, csm];
 				}
 			}).then(([status, csm]) => {
@@ -77,15 +81,14 @@ class K8000 extends discord.Client {
 				if (status) {
 					debug("Setting game to %s", status);
 					return this.user.setGame(status);
-				} else {
-					debug("Clearing game");
-					return this.user.setGame();
 				}
+				debug("Clearing game");
+				return this.user.setGame();
 			});
-/*		then((status) => {
+/*		Then((status) => {
 			debug("Setting status to %s", status);
 			this.user.setGame(status);
-		});*/
+		}); */
 	}
 
 	/**

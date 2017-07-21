@@ -39,7 +39,7 @@ const reactionCharacters = {
 	"!!": ["‼️"],
 
 	// Symbols
-	"#": ["#⃣"],
+	"#": ["#⃣"]
 
 	// Other (none of the strings are right) i'll fix it later
 /*	BACK: ["🔙"],
