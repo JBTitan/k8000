@@ -33,10 +33,59 @@ class K8000 extends discord.Client {
 			this.on("ready", () => {
 				debug("Bot logged in to account %s", this.user);
 				return fs.readdirAsync(Path.resolve(__dirname, "modules")).each(name => {
-					this.loadModule(name);
+					return this.loadModule(name);
+				}).then(() => {
+					setInterval(() => { this.updateStatus().catch(this.err) }, 15000);
+					this.updateStatus().catch(this.err);
 				}).catch(this.err);
 			});
 		});
+	}
+
+	/**
+	 * Updates the "Playing" status
+	 * @todo make this code less spaghetty-ish
+	 */
+	updateStatus() {
+		debug("Updating playing message");
+		let keys = Object.keys(this.modules).sort();
+		this.currentStatusModule = (this.currentStatusModule + 1|| 0) % keys.length;
+
+		// Add all of the module.getPlaying functions to an array as promises
+		let promises = [];
+		for (let i = this.currentStatusModule; i < keys.length + this.currentStatusModule; i++) { // Start at this.currentStatusModule and loop around the end of the array
+			let module = keys[i % keys.length];
+
+			// Wrap the function as a promise
+			if (this.modules[module].getPlaying) {
+				promises.push(new Promise((resolve, reject) => {
+					return resolve([this.modules[module].getPlaying(this, require("debug")("k8000:modules:" + module)), i % keys.length]);
+				}));
+			}
+		}
+
+		return Promise.all(promises)
+			.map(([p, csm]) => { // Make sure its all fulfilled
+				return Promise.all([p, csm]);
+			}).reduce((first, [status, csm]) => {
+				if (first) return first;
+				if (typeof(status) === "string") {
+					return [status, csm];
+				}
+			}).then(([status, csm]) => {
+				this.currentStatusModule = csm;
+				if (status) {
+					debug("Setting game to %s", status);
+					return this.user.setGame(status);
+				} else {
+					debug("Clearing game");
+					return this.user.setGame();
+				}
+			});
+/*		then((status) => {
+			debug("Setting status to %s", status);
+			this.user.setGame(status);
+		});*/
 	}
 
 	/**
