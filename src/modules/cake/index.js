@@ -35,9 +35,9 @@ async function generateCake(text) {
 }
 
 module.exports = {
-	load(k8000, debug) {
+	load() {
 	},
-	unload(k8000, debug) {
+	unload() {
 	},
 
 	commands: [
@@ -46,7 +46,7 @@ module.exports = {
 			async fn(args, message, k8000, debug) {
 				debug("Creating cake with text %s", args);
 
-				let img = await generateCake(args);
+				const img = await generateCake(args);
 
 				return message.channel.send(undefined, {
 					files: [{

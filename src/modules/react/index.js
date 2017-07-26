@@ -14,7 +14,7 @@ module.exports = {
 				const messageId = text.shift();
 				text = text.join(" ");
 
-				let m = await message.channel.fetchMessage(messageId);
+				const m = await message.channel.fetchMessage(messageId);
 
 				debug("Fetched message to react to");
 				const emoji = [];

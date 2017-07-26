@@ -1,4 +1,4 @@
- Promise = require("bluebird");
+const Promise = require("bluebird");
 
 const config = require("config");
 const debug = require("debug")("k8000");
@@ -35,13 +35,13 @@ class K8000 extends discord.Client {
 			}).catch(this.err);
 		});
 
-		this.on("message", (message) => {
+		this.on("message", message => {
 			if (message.content.startsWith(config.get("prefix"))) {
 				let args = message.content.split(" ");
-				let cmd = args.shift().substr(config.get("prefix").length);
+				const cmd = args.shift().substr(config.get("prefix").length);
 				args = args.join(" ");
 
-				for (let module in this.modules) {
+				for (const module in this.modules) {
 					if (this.modules[module].commands) {
 						for (let command in this.modules[module].commands) {
 							command = this.modules[module].commands[command];
@@ -49,8 +49,8 @@ class K8000 extends discord.Client {
 								debug("Executing command %s with args %s", cmd, args);
 
 								return message.delete().then(() => {
-										return command.fn(args, message, this, require("debug")("k8000:modules:" + module));
-									}).catch(this.err);
+									return command.fn(args, message, this, require("debug")("k8000:modules:" + module));
+								}).catch(this.err);
 							}
 						}
 					}
