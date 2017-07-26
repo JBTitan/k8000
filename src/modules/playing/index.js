@@ -2,17 +2,20 @@ const config = require("config");
 
 module.exports = {
 	load() {
-		this.message = -1;
 	},
 	unload() {
 	},
 	getPlaying(k8000) {
-		let strings = k8000.data.get("modules.playing.strings");
-		if (!strings) {
-			strings = ["github.com/dnaf/k8000"];
-			k8000.data.set("modules.playing.strings", strings);
+		let data = k8000.data.get("modules.playing");
+		if (!data.strings) {
+			data.strings = ["github.com/dnaf/k8000"];
+			k8000.data.set("modules.playing.strings", data.strings);
 		}
-		this.message = (this.message + 1) % strings.length;
-		return strings[this.message];
+		if (!data.current) data.current = -1
+
+		data.current = (data.current + 1) % data.strings.length;
+
+		k8000.data.set("modules.playing.current", data.current);
+		return data.strings[data.current];
 	}
 }
