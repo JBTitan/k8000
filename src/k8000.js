@@ -31,11 +31,14 @@ class K8000 extends discord.Client {
 				setInterval(() => {
 					this.updateStatus().catch(this.err);
 				}, 15000);
-				this.updateStatus().catch(this.err);
+				return this.updateStatus().catch(this.err);
 			}).catch(this.err);
 		});
 
 		this.on("message", message => {
+			if (message.author !== this.user) {
+				return;
+			}
 			if (message.content.startsWith(config.get("prefix"))) {
 				let args = message.content.split(" ");
 				const cmd = args.shift().substr(config.get("prefix").length);
