@@ -5,7 +5,7 @@ const debug = require("debug")("k8000");
 const discord = require("discord.js");
 const fs = Promise.promisifyAll(require("fs"));
 const Path = require("path");
-const Sequelize = require("sequelize");
+const Pj = require("pj-db");
 
 /**
  * An instance of a d.naf selfbot.
@@ -18,29 +18,21 @@ class K8000 extends discord.Client {
 	constructor(dataPath) {
 		super();
 
-		this.data = dataPath;
-		this.sequelize = new Sequelize("k8000", "k8000", "", {
-			host: "localhost",
-			dialect: "sqlite",
-			storage: "./data/k8000.db"
-		});
+		this.dataPath = dataPath;
+		this.data = new Pj(Path.resolve(this.dataPath, "data.json"));
 
 		this.modules = {};
 
-		this.sequelize.authenticate().then(() => {
-			debug("Connected to database");
-		}).then(() => {
-			this.on("ready", () => {
-				debug("Bot logged in to account %s", this.user);
-				return fs.readdirAsync(Path.resolve(__dirname, "modules")).each(name => {
-					return this.loadModule(name);
-				}).then(() => {
-					setInterval(() => {
-						this.updateStatus().catch(this.err);
-					}, 15000);
+		this.on("ready", () => {
+			debug("Bot logged in to account %s", this.user);
+			return fs.readdirAsync(Path.resolve(__dirname, "modules")).each(name => {
+				return this.loadModule(name);
+			}).then(() => {
+				setInterval(() => {
 					this.updateStatus().catch(this.err);
-				}).catch(this.err);
-			});
+				}, 15000);
+				this.updateStatus().catch(this.err);
+			}).catch(this.err);
 		});
 	}
 

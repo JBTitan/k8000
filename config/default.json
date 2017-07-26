@@ -9,5 +9,8 @@
 		"host": "localhost",
 		"port": 6600
 	},
+	"playing": {
+		"statuses": ["github.com/dnaf/k8000"]
+	},
 	"errorChannel": ""
 }
