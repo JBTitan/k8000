@@ -12,5 +12,6 @@
 	"playing": {
 		"statuses": ["github.com/dnaf/k8000"]
 	},
+	"prefix": "k8",
 	"errorChannel": ""
 }

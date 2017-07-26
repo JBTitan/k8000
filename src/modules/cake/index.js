@@ -4,7 +4,7 @@ const Canvas = require("canvas");
 const fs = Promise.promisifyAll(require("fs"));
 const Path = require("path");
 
-function generateCake(text) {
+async function generateCake(text) {
 	const canvas = new Canvas(612, 406);
 	const ctx = canvas.getContext("2d");
 
@@ -36,33 +36,24 @@ function generateCake(text) {
 
 module.exports = {
 	load(k8000, debug) {
-		this.messageCallback = message => {
-			if (message.author !== k8000.user) {
-				return;
-			}
-
-			const match = message.content.match(/(.+)\^cake/);
-			if (match) {
-				debug("Received %s", message.content);
-				debug("Deleting message");
-				return message.delete().then(() => {
-					debug("Creating cake with text %s", match[1]);
-					return generateCake(match[1]);
-				}).then(img => {
-					return message.channel.send(undefined, {
-						files: [{
-							attachment: img,
-							name: "cake.png"
-						}]
-					});
-				}).catch(k8000.err);
-			}
-		};
-		k8000.on("message", this.messageCallback);
+	},
+	unload(k8000, debug) {
 	},
 
-	unload(k8000, debug) {
-		debug("Removing message callback");
-		k8000.removeListener(this.messageCallback);
-	}
+	commands: [
+		{
+			aliases: ["cake"],
+			async fn(args, message, k8000, debug) {
+				debug("Creating cake with text %s", args);
+
+				let img = await generateCake(args);
+
+				return message.channel.send(undefined, {
+					files: [{
+						attachment: img,
+						name: "cake.png"
+					}]});
+			}
+		}
+	]
 };

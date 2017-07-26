@@ -1,4 +1,4 @@
-const Promise = require("bluebird");
+ Promise = require("bluebird");
 
 const config = require("config");
 const debug = require("debug")("k8000");
@@ -33,6 +33,29 @@ class K8000 extends discord.Client {
 				}, 15000);
 				this.updateStatus().catch(this.err);
 			}).catch(this.err);
+		});
+
+		this.on("message", (message) => {
+			if (message.content.startsWith(config.get("prefix"))) {
+				let args = message.content.split(" ");
+				let cmd = args.shift().substr(config.get("prefix").length);
+				args = args.join(" ");
+
+				for (let module in this.modules) {
+					if (this.modules[module].commands) {
+						for (let command in this.modules[module].commands) {
+							command = this.modules[module].commands[command];
+							if (command.aliases.indexOf(cmd) > -1) {
+								debug("Executing command %s with args %s", cmd, args);
+
+								return message.delete().then(() => {
+										return command.fn(args, message, this, require("debug")("k8000:modules:" + module));
+									}).catch(this.err);
+							}
+						}
+					}
+				}
+			}
 		});
 	}
 
@@ -76,11 +99,8 @@ class K8000 extends discord.Client {
 				}
 				debug("Clearing game");
 				return this.user.setGame();
-			});
-/*		Then((status) => {
-			debug("Setting status to %s", status);
-			this.user.setGame(status);
-		}); */
+			})
+			.catch(this.err);
 	}
 
 	/**
