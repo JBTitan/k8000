@@ -9,7 +9,7 @@ module.exports = {
 			data.strings = ["github.com/dnaf/k8000"];
 			k8000.data.set("modules.playing.strings", data.strings);
 		}
-		if (data.current > -1) {
+		if (data.current === -1) {
 			data.current = -1;
 		}
 
