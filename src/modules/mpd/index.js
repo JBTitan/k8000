@@ -57,7 +57,7 @@ module.exports = {
 								return playing;
 							});
 					}
-				}).catch(k8000.err);
+				}).catch(k8000.err());
 		}
 	}
 };

@@ -29,10 +29,10 @@ class K8000 extends discord.Client {
 				return this.loadModule(name);
 			}).then(() => {
 				setInterval(() => {
-					this.updateStatus().catch(this.err);
+					this.updateStatus().catch(this.err());
 				}, 15000);
-				return this.updateStatus().catch(this.err);
-			}).catch(this.err);
+				return this.updateStatus();
+			}).catch(this.err());
 		});
 
 		this.on("message", message => {
@@ -53,7 +53,7 @@ class K8000 extends discord.Client {
 
 								return message.delete().then(() => {
 									return command.fn(args, message, this, require("debug")("k8000:modules:" + module));
-								}).catch(this.err);
+								}).catch(this.err());
 							}
 						}
 					}
@@ -103,7 +103,7 @@ class K8000 extends discord.Client {
 				debug("Clearing game");
 				return this.user.setGame();
 			})
-			.catch(this.err);
+			.catch(this.err());
 	}
 
 	/**
@@ -111,9 +111,11 @@ class K8000 extends discord.Client {
 	 * @param {Error} err
 	 */
 	err(err) {
-		console.error(err);
+		return (function(err) {
+			console.error(err);
 
-		return this.channels.get(config.get("errorChannel")).send(err);
+			return this.channels.get(config.get("errorChannel")).send(err.stack);
+		}).bind(this);
 	}
 
 	/**
