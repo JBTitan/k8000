@@ -11,7 +11,7 @@ module.exports = {
 				args = args.join(" ").trim();
 
 				if (!tag) { // List tags
-					return message.reply("Not implemented");
+					return message.reply("**Tags**\n`" + Object.keys(k8000.data.get("modules.tags")).join("`, `") + "`");
 				} else if (args.length === 0) { // Return tag
 					const tagData = k8000.data.get("modules.tags", tag);
 
